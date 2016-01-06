@@ -1,0 +1,41 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Done</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div> 
+
+        <h1> You have insert a new Customer successfully!</h1>
+    </div>
+    <table class="table table-bordered table-condensed table-striped">
+        <tr>
+            <td>
+                <!-- Button link to create a new customer to the database-->
+                @Html.ActionLink("Create A New Customer", "Index", "Customer", null, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                <!-- Button link to see the current customer in the database-->
+                @Html.ActionLink("Show Current Customers", "Show", "Customer", null, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                <!-- Button link to go back to home page-->
+                @Html.ActionLink("Go back to HomePage", "Home", "Customer", null, new { @class = "btn btn-success" })
+            </td>
+        </tr>
+
+    </table>
+
+</body>
+</html>

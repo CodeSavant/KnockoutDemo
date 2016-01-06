@@ -1,0 +1,97 @@
+﻿@model IEnumerable<CustomerSite.Models.Customer>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Show</title>
+</head>
+<body>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script src="~/Scripts/knockout.validation.min.js"></script>
+
+    
+
+    <br/>
+    <h1>Current Customers in the Database</h1>
+    <br/>
+    <table class="table table-bordered table-condensed table-striped">
+        <tr>
+            <th>
+                Customer ID
+            </th>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Contact Name
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Postal Code
+            </th>
+            <th>
+                Country
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                
+            </tr>
+        }
+
+    </table>
+    <br />
+    <table class="table table-bordered table-condensed table-striped">
+        <tr>
+            <td>
+                <!-- Button link to go back to home page-->
+                @Html.ActionLink("Go back to HomePage", "Home", "Customer", null, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                <!-- Button link to create new customer to the database-->
+                @Html.ActionLink("Add new Customer", "Index", "Customer", null, new { @class = "btn btn-success" })
+            </td>
+        </tr>
+
+    </table>
+</body>
+</html>

@@ -1,0 +1,168 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+    </div>
+
+    <style type="text/css">
+        .errorStyle {
+            border: 2px solid red;
+            background-color: #fdd;
+        }
+    </style>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script src="~/Scripts/knockout.validation.min.js"></script>
+
+    <br/>
+    <h1>Customer Information System</h1>
+    <br/>
+    <h2>Please enter new customer information</h2>
+    <br />
+
+    <form method="post" action="">
+        <table class="table table-bordered table-condensed table-striped" id="tblemp">
+
+            <tr>
+                <td>Customer Name</td>
+                <td>
+                    <input type="text" id="CustomerName" data-bind="value:CustomerName" />
+                </td>
+            </tr>
+            <tr>
+                <td>Contact Name</td>
+                <td>
+                    <input type="text" id="ContactName" data-bind="value:ContactName" />
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <input type="text" id="Address" data-bind="value:Address" />
+                </td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>
+                    <input type="text" id="City" data-bind="value:City" />
+                </td>
+            </tr>
+            <tr>
+                <td>Postal Code</td>
+                <td>
+                    <input type="text" id="PostalCode" data-bind="value:PostalCode" />
+                </td>
+            </tr>
+            <tr>
+                <td>Country</td>
+                <td>
+                    <input type="text" id="Country" data-bind="value:Country" />
+                </td>
+            </tr>           
+            <tr>
+                <td>
+                    <input type="button" value="Save" id="save"
+                           data-bind="click: CustomerInformationSystem.saveCustomer" class="btn btn-success" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+
+        <br/>
+        <table class="table table-bordered table-condensed table-striped">
+            <tr>
+                <td>
+                    <!-- Button link to go back to home page-->
+                    @Html.ActionLink("Go back to HomePage", "Home", "Customer", null, new { @class = "btn btn-success" })
+                </td>
+                <td>
+                    <!-- Button link to see the current customer in the database-->
+                    @Html.ActionLink("Show Current Customers", "Show", "Customer", null, new { @class = "btn btn-success" })
+                </td>
+            </tr>
+
+        </table>
+
+    </form>
+
+    <script type="text/javascript">
+
+    var CustomerInformationSystem = {};
+    //The Model with the validation Rules
+    CustomerInformationSystem.CustomerViewModel = function (cus) {
+        var CustomerInfoModel = ko.validatedObservable({
+            CustomerID: ko.observable(cus.CustomerID),
+            CustomerName: ko.observable(cus.CustomerName).extend({ required: true }),
+            ContactName: ko.observable(cus.ContactName).extend({ required: true }),
+            Address: ko.observable(cus.Address).extend({ required: true }),
+            City: ko.observable(cus.City).extend({ required: true }),
+            PostalCode: ko.observable(cus.PostalCode).extend({ required: true }),
+            Country: ko.observable(cus.Country).extend({ required: true })
+
+        });
+
+        return CustomerInfoModel;
+    };
+
+
+    // Bind the CustomerInfo
+    CustomerInformationSystem.bindModel = function (cus) {
+
+        // Create the view model
+        CustomerInformationSystem.CusViewModel =
+          CustomerInformationSystem.CustomerViewModel(cus);
+
+        //The Validation initialization
+        ko.validation.init({ messagesOnModified: false, errorClass: 'errorStyle', insertMessages: true });
+        ko.applyBindings(this.CusViewModel);
+    };
+
+    //Save the Information
+    CustomerInformationSystem.saveCustomer = function () {
+        if (CustomerInformationSystem.CusViewModel.isValid()) {
+            $.ajax({
+                url: "/api/CustomerInfoAPI",
+                type: "POST",
+                data: ko.toJSON(this),
+                datatype: "json",
+                contentType: 'application/json'
+            }).done(function (res) {
+                alert("Customer Added Successfully " + res.CusNo);
+                window.location.href = 'Done';
+            }).error(function (err) {
+                alert("Error " + err.status);
+            });
+        } else {
+            alert("Please enter the valid data");
+        }
+    };
+
+
+  
+
+
+
+    $(document).ready(function () {
+        CustomerInformationSystem.bindModel({ CustomerID: 0, CustomerName: "", ContactName: "", Address: "", City: "", PostalCode: "", Country: ""});
+    });
+    </script>
+
+
+
+</body>
+
+
+</html>
